@@ -6,11 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>96b4cbaa-7d6d-4285-b5ec-87a4cceab7d0</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Microsoft.Azure.Cosmos" Version="9.2.1" />
+        <PackageReference Include="Aspire.Microsoft.Azure.Cosmos" Version="9.3.0-preview.1.25264.2" />
         <PackageReference Include="Aspire.Npgsql" Version="9.2.1" />
+        <PackageReference Include="Aspire.StackExchange.Redis" Version="9.2.1" />
         <PackageReference Include="Dapper" Version="2.1.66" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
