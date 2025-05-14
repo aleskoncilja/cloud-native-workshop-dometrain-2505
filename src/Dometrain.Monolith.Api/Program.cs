@@ -1,4 +1,3 @@
-using System.Text;
 using Dometrain.Monolith.Api.Courses;
 using Dometrain.Monolith.Api.Database;
 using Dometrain.Monolith.Api.Enrollments;
@@ -15,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +48,7 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("ApiAdmin", p => p.AddRequirements(new AdminAuthRequirement(config["Identity:AdminApiKey"]!)))
-    .AddPolicy("Admin", p => p.RequireAssertion(c => 
+    .AddPolicy("Admin", p => p.RequireAssertion(c =>
             c.User.HasClaim(m => m is { Type: "is_admin", Value: "true" })));
 
 builder.Services.AddScoped<ApiKeyAuthFilter>();
@@ -77,8 +77,11 @@ builder.Services.AddSingleton<CourseRepository>();
 builder.Services.AddSingleton<ICourseRepository>(x =>
     new CachedCourseRepository(x.GetRequiredService<CourseRepository>(), x.GetRequiredService<IConnectionMultiplexer>()));
 
-builder.Services.AddSingleton<IShoppingCartRepository, ShoppingCartRepository>();
+//builder.Services.AddSingleton<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddSingleton<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddSingleton<ShoppingCartRepository>();
+builder.Services.AddSingleton<IShoppingCartRepository>(x =>
+    new CachedShoppingCartRepository(x.GetRequiredService<ShoppingCartRepository>(), x.GetRequiredService<IConnectionMultiplexer>()));
 
 builder.Services.AddSingleton<IEnrollmentRepository, EnrollmentRepository>();
 builder.Services.AddSingleton<IEnrollmentService, EnrollmentService>();
