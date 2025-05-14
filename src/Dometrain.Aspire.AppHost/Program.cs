@@ -1,3 +1,6 @@
+using Aspire.Hosting.Azure;
+using Microsoft.Extensions.Hosting;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 var mainDbUsername = builder.AddParameter("postgres-username");
@@ -11,14 +14,18 @@ var mainDb = builder.AddPostgres("main-db", mainDbUsername, mainDbPassword, port
 var cartDb = builder.AddAzureCosmosDB("cosmosdb")
     .AddCosmosDatabase("cartdb");
 
-var redis = builder.AddRedis("redis")
-    .WithRedisInsight();
+var redis = builder.AddRedis("redis");
+
+var rabbitmq = builder.AddRabbitMQ("rabbitmq")
+    .WithManagementPlugin();
 
 builder.AddProject<Projects.Dometrain_Monolith_Api>("dometrain-api")
     .WithReplicas(5)
     .WithReference(mainDb)
     .WithReference(cartDb)
-    .WithReference(redis);
+    .WithReference(redis)
+    .WithReference(rabbitmq)
+    .WaitFor(rabbitmq);
 
 var app = builder.Build();
     
