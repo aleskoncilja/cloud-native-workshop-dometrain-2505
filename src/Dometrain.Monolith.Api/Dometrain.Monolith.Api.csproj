@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Microsoft.Azure.Cosmos" Version="9.3.0-preview.1.25264.2" />
+        <PackageReference Include="Aspire.Microsoft.Azure.Cosmos" Version="9.2.1" />
         <PackageReference Include="Aspire.Npgsql" Version="9.2.1" />
         <PackageReference Include="Aspire.StackExchange.Redis" Version="9.2.1" />
         <PackageReference Include="Dapper" Version="2.1.66" />
