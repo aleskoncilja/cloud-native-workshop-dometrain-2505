@@ -1,7 +1,5 @@
-using System.Net;
-using Dapper;
-using Dometrain.Monolith.Api.Database;
 using Microsoft.Azure.Cosmos;
+using System.Net;
 
 namespace Dometrain.Monolith.Api.ShoppingCarts;
 
@@ -16,9 +14,9 @@ public interface IShoppingCartRepository
     Task<bool> AddCourseAsync(Guid studentId, Guid courseId);
 
     Task<ShoppingCart?> GetByIdAsync(Guid studentId);
-    
+
     Task<bool> RemoveItemAsync(Guid studentId, Guid courseId);
-    
+
     Task<bool> ClearAsync(Guid studentId);
 }
 
@@ -52,7 +50,7 @@ public class ShoppingCartRepository : IShoppingCartRepository
                 CourseIds = []
             };
         }
-        
+
         if (!cart.CourseIds.Contains(courseId))
         {
             cart.CourseIds.Add(courseId);
@@ -63,18 +61,55 @@ public class ShoppingCartRepository : IShoppingCartRepository
         return response.StatusCode is HttpStatusCode.OK or HttpStatusCode.Created;
     }
 
+
     public async Task<ShoppingCart?> GetByIdAsync(Guid studentId)
     {
-        return null;
+        var container = _cosmosClient.GetContainer(DatabaseId, ContainerId);
+        try
+        {
+            return await container.ReadItemAsync<ShoppingCart>(studentId.ToString(),
+                new PartitionKey(studentId.ToString()));
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
     }
+
 
     public async Task<bool> RemoveItemAsync(Guid studentId, Guid courseId)
     {
-        return true;
+        var container = _cosmosClient.GetContainer(DatabaseId, ContainerId);
+        try
+        {
+            var cart = await GetByIdAsync(studentId);
+            if (cart is null)
+            {
+                return true;
+            }
+
+            cart.CourseIds.Remove(courseId);
+            var response = await container.UpsertItemAsync(cart);
+            return response.StatusCode is HttpStatusCode.OK or HttpStatusCode.Created;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return true;
+        }
     }
 
     public async Task<bool> ClearAsync(Guid studentId)
     {
-        return true;
+        var container = _cosmosClient.GetContainer(DatabaseId, ContainerId);
+        try
+        {
+            await container.DeleteItemAsync<ShoppingCart>(studentId.ToString(), new PartitionKey(studentId.ToString()));
+            return true;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return true;
+        }
     }
+
 }

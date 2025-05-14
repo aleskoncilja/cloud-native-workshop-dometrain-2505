@@ -9,6 +9,7 @@ var mainDb = builder.AddPostgres("main-db", mainDbUsername, mainDbPassword, port
     .AddDatabase("dometrain");
 
 var cartDb = builder.AddAzureCosmosDB("cosmosdb")
+    //.RunAsExisting()
     .AddCosmosDatabase("cartdb");
 
 builder.AddProject<Projects.Dometrain_Monolith_Api>("dometrain-api")
