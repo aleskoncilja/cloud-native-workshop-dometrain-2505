@@ -1,0 +1,13 @@
+{
+  "inputPath": "aspirate-output",
+  "containerImageTags": [
+    "latest"
+  ],
+  "kubeContext": "minikube",
+  "outputFormat": "docker",
+  "secrets": {
+    "salt": "tLVfPurl02wxIjJh",
+    "hash": "qEexQrrqv0Fhz3UGNG7PhAeJz6yCgtPik05Ppwdis7I=",
+    "secrets": {}
+  }
+}

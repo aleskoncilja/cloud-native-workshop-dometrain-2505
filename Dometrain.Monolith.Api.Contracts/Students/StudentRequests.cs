@@ -1,4 +1,4 @@
-namespace Dometrain.Monolith.Api.Students;
+namespace Dometrain.Monolith.Api.Contracts.Students;
 
 public record StudentRegistrationRequest(string Email, string FullName, string Password);
 
