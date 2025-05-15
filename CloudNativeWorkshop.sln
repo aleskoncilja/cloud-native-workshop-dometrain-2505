@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36109.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EA020C9E-BECD-40C1-98B3-48070D728500}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dometrain.Monolith.Api", "src\Dometrain.Monolith.Api\Dometrain.Monolith.Api.csproj", "{BCD98E15-8F73-4F5A-8F9B-3A1BC752DB41}"
@@ -15,15 +18,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dometrain.Aspire.AppHost", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dometrain.Aspire.ServiceDefaults", "src\Dometrain.Aspire.ServiceDefaults\Dometrain.Aspire.ServiceDefaults.csproj", "{BF243299-72BC-4827-8A8E-2C58D86758A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dometrain.Monolith.Api.Sdk", "Dometrain.Monolith.Api.Sdk\Dometrain.Monolith.Api.Sdk.csproj", "{B51BDA14-48DA-4DAA-8E34-61F8C9A0F79B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dometrain.Monolith.Contract", "Dometrain.Monolith.Contract\Dometrain.Monolith.Contract.csproj", "{5D89641A-4CE6-4441-A569-4C535FE049F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{BCD98E15-8F73-4F5A-8F9B-3A1BC752DB41} = {EA020C9E-BECD-40C1-98B3-48070D728500}
-		{414C5635-2DE0-4E68-B48F-89950DC94C7E} = {EA020C9E-BECD-40C1-98B3-48070D728500}
-		{BF243299-72BC-4827-8A8E-2C58D86758A1} = {EA020C9E-BECD-40C1-98B3-48070D728500}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BCD98E15-8F73-4F5A-8F9B-3A1BC752DB41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -38,5 +40,26 @@ Global
 		{BF243299-72BC-4827-8A8E-2C58D86758A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF243299-72BC-4827-8A8E-2C58D86758A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF243299-72BC-4827-8A8E-2C58D86758A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B51BDA14-48DA-4DAA-8E34-61F8C9A0F79B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B51BDA14-48DA-4DAA-8E34-61F8C9A0F79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B51BDA14-48DA-4DAA-8E34-61F8C9A0F79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B51BDA14-48DA-4DAA-8E34-61F8C9A0F79B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D89641A-4CE6-4441-A569-4C535FE049F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D89641A-4CE6-4441-A569-4C535FE049F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D89641A-4CE6-4441-A569-4C535FE049F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D89641A-4CE6-4441-A569-4C535FE049F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BCD98E15-8F73-4F5A-8F9B-3A1BC752DB41} = {EA020C9E-BECD-40C1-98B3-48070D728500}
+		{414C5635-2DE0-4E68-B48F-89950DC94C7E} = {EA020C9E-BECD-40C1-98B3-48070D728500}
+		{BF243299-72BC-4827-8A8E-2C58D86758A1} = {EA020C9E-BECD-40C1-98B3-48070D728500}
+		{B51BDA14-48DA-4DAA-8E34-61F8C9A0F79B} = {EA020C9E-BECD-40C1-98B3-48070D728500}
+		{5D89641A-4CE6-4441-A569-4C535FE049F1} = {EA020C9E-BECD-40C1-98B3-48070D728500}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {690D2AB1-F505-4E71-8B7B-3CBB1414859E}
 	EndGlobalSection
 EndGlobal

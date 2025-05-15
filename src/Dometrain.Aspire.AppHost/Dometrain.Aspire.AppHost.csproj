@@ -22,4 +22,10 @@
     <ProjectReference Include="..\Dometrain.Monolith.Api\Dometrain.Monolith.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
