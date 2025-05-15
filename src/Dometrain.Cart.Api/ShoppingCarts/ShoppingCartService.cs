@@ -19,7 +19,6 @@ public class ShoppingCartService : IShoppingCartService
     private readonly IShoppingCartRepository _shoppingCartRepository;
     private readonly IStudentsApiClient _studentsApiClient;
     private readonly ICoursesApiClient _coursesApiClient;
-    private readonly IMeterFactory _meterFactory;
     private readonly Counter<long> _itemsAddedCounter;
 
     public ShoppingCartService(IShoppingCartRepository shoppingCartRepository, IStudentsApiClient studentsApiClient, ICoursesApiClient coursesApiClient, IMeterFactory meterFactory)
@@ -27,8 +26,7 @@ public class ShoppingCartService : IShoppingCartService
         _shoppingCartRepository = shoppingCartRepository;
         _studentsApiClient = studentsApiClient;
         _coursesApiClient = coursesApiClient;
-        _meterFactory = meterFactory;
-        _itemsAddedCounter = _meterFactory.Create("cart.meter").CreateCounter<long>("cart.items.added");
+        _itemsAddedCounter = meterFactory.Create("cart.meter").CreateCounter<long>("cart.items.added");
     }
 
     public async Task<ShoppingCart?> AddCourseAsync(Guid studentId, Guid courseId)
