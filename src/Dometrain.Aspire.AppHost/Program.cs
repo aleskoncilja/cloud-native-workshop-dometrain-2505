@@ -30,6 +30,9 @@ var grafana = builder.AddContainer("grafana", "grafana/grafana")
     .WithBindMount("../../grafana/dashboards", "/var/lib/grafana/dashboards", isReadOnly: true)
     .WithHttpEndpoint(targetPort: 3000, name: "http");
 
+builder.AddProject<Projects.Dometrain_Cart_Processor>("dometrain-cart-processor")
+    .WithReference(cartDb);
+
 var mainApi = builder.AddProject<Projects.Dometrain_Monolith_Api>("dometrain-api")
     .WithReplicas(1)
     .WithReference(mainDb)
