@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 		database\init.sql = database\init.sql
 		Insomnia_collection.json = Insomnia_collection.json
+		smoke-test.js = smoke-test.js
+		load-test.js = load-test.js
+		stress-test.js = stress-test.js
+		spike-test.js = spike-test.js
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dometrain.Aspire.AppHost", "src\Dometrain.Aspire.AppHost\Dometrain.Aspire.AppHost.csproj", "{414C5635-2DE0-4E68-B48F-89950DC94C7E}"
