@@ -1,0 +1,78 @@
+services:
+  aspire-dashboard:
+    container_name: "aspire-dashboard"
+    image: "mcr.microsoft.com/dotnet/aspire-dashboard:9.0"
+    environment:
+      DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: "true"
+    ports:
+    - target: 18888
+      published: 18888
+    restart: unless-stopped
+  main-db:
+    container_name: "main-db"
+    image: "docker.io/library/postgres:17.2"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: "workshop"
+      POSTGRES_PASSWORD: "changeme"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "main-db"
+    volumes:
+    - "dometrain-aspire-apphost-bdc9e58661-main-db-data:/var/lib/postgresql/data"
+    ports:
+    - target: 5432
+      published: 5432
+    restart: unless-stopped
+  redis:
+    container_name: "redis"
+    image: "docker.io/library/redis:7.4"
+    environment:
+      REDIS_PASSWORD: "Fbgjhy5Q8r5vsbXGzElpRD"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "redis"
+    ports:
+    - target: 6379
+      published: 6379
+    command:
+    - "-c"
+    - "redis-server --requirepass $REDIS_PASSWORD"
+    - "/bin/sh"
+    restart: unless-stopped
+  rabbitmq:
+    container_name: "rabbitmq"
+    image: "docker.io/library/rabbitmq:4.0-management"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "nrMI0iRwjkmUCZ1aHJ0lXe"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "rabbitmq"
+    ports:
+    - target: 5672
+      published: 5672
+    - target: 15672
+      published: 15672
+    restart: unless-stopped
+  dometrain-api:
+    container_name: "dometrain-api"
+    image: "dometrain-api:latest"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8080"
+      ConnectionStrings__dometrain: "Host=main-db;Port=5432;Username=workshop;Password=changeme;Database=dometrain"
+      ConnectionStrings__cartdb: "AccountEndpoint={cosmosdb.outputs.connectionString};Database=cartdb"
+      ConnectionStrings__redis: "redis:6379,password=Fbgjhy5Q8r5vsbXGzElpRD"
+      ConnectionStrings__rabbitmq: "amqp://guest:nrMI0iRwjkmUCZ1aHJ0lXe@rabbitmq:5672"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "dometrain-api"
+    ports:
+    - target: 8080
+      published: 10000
+    - target: 8443
+      published: 10001
+    restart: unless-stopped
+volumes:
+  dometrain-aspire-apphost-bdc9e58661-main-db-data: {}

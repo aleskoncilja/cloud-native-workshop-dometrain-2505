@@ -28,5 +28,5 @@ builder.AddProject<Projects.Dometrain_Monolith_Api>("dometrain-api")
     .WaitFor(rabbitmq);
 
 var app = builder.Build();
-    
+
 app.Run();
