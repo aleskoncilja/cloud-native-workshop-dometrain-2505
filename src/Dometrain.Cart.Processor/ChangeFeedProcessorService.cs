@@ -1,6 +1,7 @@
 using Dometrain.Cart.Api.ShoppingCarts;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace Dometrain.Cart.Processor;
 
@@ -12,17 +13,19 @@ public class ChangeFeedProcessorService : BackgroundService
 
     private readonly CosmosClient _cosmosClient;
     private readonly ILogger<ChangeFeedProcessorService> _logger;
+    private readonly IConnectionMultiplexer _connectionMultiplexer;
 
-    public ChangeFeedProcessorService(CosmosClient cosmosClient, ILogger<ChangeFeedProcessorService> logger)
+    public ChangeFeedProcessorService(CosmosClient cosmosClient, ILogger<ChangeFeedProcessorService> logger, IConnectionMultiplexer connectionMultiplexer)
     {
         _cosmosClient = cosmosClient;
         _logger = logger;
+        _connectionMultiplexer = connectionMultiplexer;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var database = _cosmosClient.GetDatabase(DatabaseId);
-            
+
         var leaseContainer = _cosmosClient.GetContainer(DatabaseId, LeaseContainerId);
         var changeFeedProcessor = _cosmosClient.GetContainer(DatabaseId, SourceContainerId)
             .GetChangeFeedProcessorBuilder<ShoppingCart>(processorName: "cache-processor",
@@ -45,10 +48,21 @@ public class ChangeFeedProcessorService : BackgroundService
 
         foreach (ShoppingCart item in changes)
         {
-            _logger.LogInformation(JsonConvert.SerializeObject(item));
+            string serialized = JsonConvert.SerializeObject(item);
+            _logger.LogInformation(serialized);
+
+
+            var db = _connectionMultiplexer.GetDatabase();
+            var cachedCartString = await db.StringGetAsync($"cart_id_{item.StudentId}");
+            if (!cachedCartString.IsNull)
+            {
+                var cachedShoppingCard = System.Text.Json.JsonSerializer.Deserialize<ShoppingCart>(cachedCartString.ToString());
+                _logger.LogInformation("cached shopping card: " + cachedShoppingCard);
+            }
+
             await Task.Delay(10);
         }
-        
+
         _logger.LogDebug("Finished handling changes.");
     }
 }
