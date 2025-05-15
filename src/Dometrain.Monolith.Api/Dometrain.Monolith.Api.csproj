@@ -10,7 +10,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Microsoft.Azure.Cosmos" Version="9.2.1" />
         <PackageReference Include="Aspire.Npgsql" Version="9.2.1" />
         <PackageReference Include="Aspire.StackExchange.Redis" Version="9.2.1" />
         <PackageReference Include="Dapper" Version="2.1.66" />
@@ -31,7 +30,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Dometrain.Monolith.Api.Contracts\Dometrain.Monolith.Api.Contracts.csproj" />
+      <ProjectReference Include="..\Dometrain.Api.Shared\Dometrain.Api.Shared.csproj" />
       <ProjectReference Include="..\Dometrain.Aspire.ServiceDefaults\Dometrain.Aspire.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\Dometrain.Monolith.Api.Contracts\Dometrain.Monolith.Api.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

@@ -14,18 +14,24 @@ var mainDb = builder.AddPostgres("main-db", mainDbUsername, mainDbPassword, port
 var cartDb = builder.AddAzureCosmosDB("cosmosdb")
     .AddCosmosDatabase("cartdb");
 
-var redis = builder.AddRedis("redis");
+var redis = builder.AddRedis("redis")
+    .WithLifetime(ContainerLifetime.Persistent);
 
 var rabbitmq = builder.AddRabbitMQ("rabbitmq")
-    .WithManagementPlugin();
+    .WithManagementPlugin()
+    .WithLifetime(ContainerLifetime.Persistent);
 
-builder.AddProject<Projects.Dometrain_Monolith_Api>("dometrain-api")
-    .WithReplicas(5)
+var mainApi = builder.AddProject<Projects.Dometrain_Monolith_Api>("dometrain-api")
+    .WithReplicas(1)
     .WithReference(mainDb)
-    .WithReference(cartDb)
     .WithReference(redis)
     .WithReference(rabbitmq)
     .WaitFor(rabbitmq);
+
+builder.AddProject<Projects.Dometrain_Cart_Api>("cart-api")
+    .WithReference(cartDb)
+    .WithReference(redis)
+    .WithEnvironment("MainApi__BaseUrl", mainApi.GetEndpoint("http"));
 
 var app = builder.Build();
     
