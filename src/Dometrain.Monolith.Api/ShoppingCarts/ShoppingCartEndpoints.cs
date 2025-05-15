@@ -1,4 +1,5 @@
 using Dometrain.Monolith.Api.Identity;
+using Dometrain.Monolith.Api.Students;
 
 namespace Dometrain.Monolith.Api.ShoppingCarts;
 
@@ -8,27 +9,27 @@ public static class ShoppingCartEndpoints
     {
         var studentId = httpContext.GetUserId()!;
         var cart = await shoppingCartService.GetByIdAsync(studentId.Value);
-        return cart is null ? Results.NotFound() : Results.Ok(cart);
+        return cart is null ? Results.NotFound() : Results.Ok(cart.MapToResponse());
     }
-    
+
     public static async Task<IResult> AddCourse(Guid courseId, IShoppingCartService shoppingCartService, HttpContext httpContext)
     {
         var studentId = httpContext.GetUserId()!;
         var cart = await shoppingCartService.AddCourseAsync(studentId.Value, courseId);
-        return cart is null ? Results.NotFound() : Results.Ok(cart);
+        return cart is null ? Results.NotFound() : Results.Ok(cart.MapToResponse());
     }
-    
+
     public static async Task<IResult> RemoveCourse(Guid courseId, IShoppingCartService shoppingCartService, HttpContext httpContext)
     {
         var studentId = httpContext.GetUserId()!;
         var cart = await shoppingCartService.RemoveItemAsync(studentId.Value, courseId);
-        return cart is null ? Results.NotFound() : Results.Ok(cart);
+        return cart is null ? Results.NotFound() : Results.Ok(cart.MapToResponse());
     }
-    
+
     public static async Task<IResult> ClearCart(IShoppingCartService shoppingCartService, HttpContext httpContext)
     {
         var studentId = httpContext.GetUserId()!;
         var cart = await shoppingCartService.ClearAsync(studentId.Value);
-        return cart is null ? Results.NotFound() : Results.Ok(cart);
+        return cart is null ? Results.NotFound() : Results.Ok(cart.MapToResponse());
     }
 }
