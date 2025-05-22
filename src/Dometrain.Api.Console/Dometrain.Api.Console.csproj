@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Dometrain.Monolith.Api.Sdk\Dometrain.Monolith.Api.Sdk.csproj" />
+    <ProjectReference Include="..\Dometrain.Monolith.Api.Contracts\Dometrain.Monolith.Api.Contracts.csproj" />
     <ProjectReference Include="..\Dometrain.Monolith.Api.Sdk\Dometrain.Monolith.Api.Sdk.csproj" />
   </ItemGroup>
 

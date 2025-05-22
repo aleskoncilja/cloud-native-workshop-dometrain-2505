@@ -1,7 +1,6 @@
 ﻿using Dometrain.Monolith.Api.Sdk;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Refit;
 
 var host = Host.CreateApplicationBuilder();
 
